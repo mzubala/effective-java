@@ -2,7 +2,6 @@
 
 In order to prepare for the workshop, we'll need:
 - Java 21
-- Maven
 - git
 - IDE (IDEA preferred)
 
@@ -13,7 +12,6 @@ Clone this repository and make sure that you get `build success` after running `
 
 Żeby przygotować się do szkolenia potrzebne nam będą:
 - Java 21
-- Maven
 - git
 - ulubione IDE (najlepiej IDEA)
 
