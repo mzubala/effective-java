@@ -3,15 +3,18 @@ package com.bottega.function.E08;
 import com.bottega.function.E08.misc.User;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
+import static java.util.concurrent.CompletableFuture.failedFuture;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CompletableFuturesTest {
@@ -96,11 +99,14 @@ public class CompletableFuturesTest {
     }
 
     @Test
-    public void L8_returnResultsAsList() {
+    public void L8_returnResultsAsList() throws ExecutionException, InterruptedException {
         List<CompletableFuture<Integer>> futures = Arrays.asList(completedFuture(1), completedFuture(2));
+        List<CompletableFuture<Integer>> futuresWithError = Arrays.asList(completedFuture(1), failedFuture(new IllegalArgumentException()));
 
         CompletableFuture<List<Integer>> apply = CompletableFutures.L8_returnResultsAsList(futures);
+        CompletableFuture<List<Integer>> applyErrored = CompletableFutures.L8_returnResultsAsList(futuresWithError);
 
         assertThat(apply).isCompletedWithValueMatching(list -> list.contains(1) && list.contains(2));
+        assertThat(applyErrored).failsWithin(Duration.ofSeconds(1)).withThrowableThat().withCauseInstanceOf(IllegalArgumentException.class);
     }
 }

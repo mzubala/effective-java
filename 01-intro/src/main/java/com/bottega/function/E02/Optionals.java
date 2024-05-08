@@ -1,7 +1,6 @@
 package com.bottega.function.E02;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -9,9 +8,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-class Optionals {
+import static com.bottega.function.Utils.todo;
 
-    private static final Logger log = LoggerFactory.getLogger(Optionals.class);
+@Slf4j
+class Optionals {
 
     private static final String DEFAULT = "DEFAULT";
 
@@ -22,7 +22,7 @@ class Optionals {
      * WARNING: this is an anti-pattern (unless you know what you're doing)
      */
     static Function<Integer, Person> L1_bruteForceGet() {
-        return id -> findOneById(id).orElseThrow();
+        return todo();
     }
 
     /**
@@ -30,25 +30,21 @@ class Optionals {
      * Hint: check {@link Optional}'s API
      */
     static Function<Integer, Person> L2_customException() {
-        return id -> findOneById(id).orElseThrow(() -> new IllegalStateException());
+        return todo();
     }
 
     /**
      * Get {@link Person#name} if found or else return {@link this#DEFAULT}
      */
     static Function<Integer, String> L3_defaultValue() {
-        return id -> findOneById(id)
-          .map(p -> p.getName())
-          .orElse(DEFAULT);
+        return todo();
     }
 
     /**
      * Get {@link Person#name} if found or else return the value returned by provided method (represented by Supplier<String)
      */
     static BiFunction<Integer, Supplier<String>, String> L4_defaultValueMethodResult() {
-        return (id, supplier) -> findOneById(id)
-          .map(Person::getName)
-          .orElseGet(supplier);
+        return todo();
     }
 
     /**
@@ -58,11 +54,7 @@ class Optionals {
      * Hint: {@link Optional#filter}
      */
     static Function<Integer, String> L5_processValue() {
-        return id -> findOneById(id)
-          .map(Person::getName)
-          .filter(name -> !name.isEmpty())
-          .map(String::toUpperCase)
-          .orElse(DEFAULT);
+        return todo();
     }
 
     /**
@@ -73,11 +65,7 @@ class Optionals {
      * Hint: {@link Optional#flatMap(Function)}
      */
     static Function<Integer, Integer> L6_nestedOptionals() {
-        return id -> findOneById(id)
-          .map(Person::getName)
-          .filter(name -> !name.isEmpty())
-          .flatMap(Optionals::findAgeByName)
-          .orElse(42);
+        return todo();
     }
 
     static class Person {
@@ -93,10 +81,6 @@ class Optionals {
         String getName() {
             return name;
         }
-    }
-
-    private static <T> T todo() {
-        throw new RuntimeException("todo");
     }
 
     private static Optional<Integer> findAgeByName(String name) {

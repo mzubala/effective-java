@@ -1,94 +1,100 @@
 package com.bottega.function.E01;
 
-import com.pholser.junit.quickcheck.Property;
-import com.pholser.junit.quickcheck.generator.InRange;
-import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.assertj.core.api.Assertions;
-import org.junit.runner.RunWith;
 
-import java.net.URI;
-import java.util.concurrent.Callable;
-import java.util.function.BinaryOperator;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.function.Function;
-import java.util.function.IntPredicate;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
+import static com.bottega.function.E01.FunctionalInterfaces.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(JUnitQuickcheck.class)
 public class FunctionalInterfacesTest {
 
-    @Property
-    public void l1_toConstant() {
-        assertThat(FunctionalInterfaces.L1_toConstant().get()).isEqualTo(42);
+    @Test
+    public void l1_constantSupplier() {
+        assertThat(L1_constantSupplier().get()).isEqualTo("test");
     }
 
-    @Property
-    public void l2_toUpperCase() {
-        String input = RandomStringUtils.randomAlphabetic(10);
-        String output = input.toUpperCase();
-
-        assertThat(FunctionalInterfaces.L2_toUpperCase().apply(input)).isEqualTo(output);
+    @Test
+    public void l2_evenPredicate() {
+        var random = Double.valueOf(Math.random() * 1000).longValue();
+        assertThat(L2_evenPredicate().test(2 * random)).isTrue();
+        assertThat(L2_evenPredicate().test(2 * random + 1)).isFalse();
     }
 
-    @Property
-    public void l3_toLong(Long input) {
-        Function<String, Long> function = FunctionalInterfaces.L3_toLong();
-
-        assertThat(function.apply(input.toString())).isEqualTo(input);
+    @Test
+    public void l3_TriFunction() throws NoSuchMethodException {
+        var klass = FunctionalInterfaces.L3_TriFunction.class;
+        assertThat(klass).isInterface()
+            .hasAnnotations(FunctionalInterface.class);
+        assertThat(klass.getTypeParameters()).hasSize(4);
+        var method = Arrays.stream(klass.getMethods()).filter(m -> m.getName().equals("apply")).findFirst().orElseThrow();
+        assertThat(method.getParameterCount()).isEqualTo(3);
+        assertThat(method.getGenericParameterTypes()).containsExactly(klass.getTypeParameters()[0], klass.getTypeParameters()[1], klass.getTypeParameters()[2]);
+        assertThat(method.getGenericReturnType()).isEqualTo(klass.getTypeParameters()[3]);
     }
 
-    @Property
-    public void l4_to42IntegerPredicateFalse(@InRange(minInt = 43) Integer input) {
-        IntPredicate function = FunctionalInterfaces.L4_to42IntegerPredicate();
-
-        assertThat(function.test(input)).isEqualTo(true);
+    @Test
+    public void l4_absSqrt() {
+        assertThat(L4_absSqrt().apply(-4.0)).isEqualTo(2.0);
+        assertThat(L4_absSqrt().apply(4.0)).isEqualTo(2.0);
+        assertThat(L4_absSqrt().apply(16.0)).isEqualTo(4.0);
     }
 
-    @Property
-    public void l4_to42IntegerPredicateTrue() {
-        IntPredicate function = FunctionalInterfaces.L4_to42IntegerPredicate();
-
-        assertThat(function.test(42)).isEqualTo(false);
+    @Test
+    public void l5_printer() {
+        var os = new ByteArrayOutputStream();
+        try (PrintStream ps = new PrintStream(os, true)) {
+            L5_printer(ps).accept("tEsT");
+        }
+        assertThat(os.toString()).isEqualTo("test\n");
     }
 
-    @Property
-    public void l5_toIntegerPredicate(@InRange(maxInt = Integer.MAX_VALUE - 1) Integer input) {
-        Function<Integer, Predicate<Integer>> function = FunctionalInterfaces.L5_toIntegerPredicate();
-
-        assertThat(function.apply(input).test(input)).isEqualTo(false);
-        assertThat(function.apply(input).test(input + 1)).isEqualTo(true);
-
+    @Test
+    public void l6_userFactory() {
+        assertThat(L6_userFactory().apply("John", "Doe")).isEqualTo(new User("John", "Doe"));
     }
 
-    @Property
-    public void l6_toURI() {
-        String input = RandomStringUtils.randomAlphabetic(10);
-        String string = String.format("http://%s.com", input);
-        URI uri = URI.create(string);
-
-        assertThat(FunctionalInterfaces.L6_toURI().apply(string)).isEqualTo(uri);
+    @Test
+    public void l7_userNameSupplier() {
+        assertThat(L7_userNameSupplier(new User("John", "Doe")).get()).isEqualTo("John Doe");
     }
 
-    @Property
-    public void l7_toCallable(Integer input) throws Exception {
-        Function<Supplier<Integer>, Callable<Integer>> function = FunctionalInterfaces.L7_toCallable();
-        Supplier<Integer> supplier = () -> input;
-        Callable<Integer> output = function.apply(supplier);
+    @Test
+    public void l8_toConsumer() {
+        // given
+        var sb = new StringBuilder();
+        Function<String, String> function = (s) -> {
+            sb.append(s);
+            return s;
+        };
 
-        assertThat(supplier.get()).isEqualTo(output.call());
+        // when
+        var consumer = L8_toConsumer(function);
+        consumer.accept("test value");
+
+        // then
+        assertThat(sb.toString()).isEqualTo("test value");
     }
 
-    @Property
-    public void l8_functionComposition(@InRange(maxInt = (Integer.MAX_VALUE / 2) - 2) Integer input) {
+    @Test
+    public void l9_userNameGetter() {
+        assertThat(L9_userNameGetter().apply(new User("John", "Doe"))).isEqualTo("John Doe");
+    }
 
-        BinaryOperator<Function<Integer, Integer>> combiner = FunctionalInterfaces.L8_functionComposition();
+    @Test
+    public void l10_lastNameAndFirstNameComparator() {
+        // given
+        var comparator = L10_lastNameAndFirstNameComparator();
 
-        Function<Integer, Integer> f1 = i -> i + 2;
-        Function<Integer, Integer> f2 = i -> i * 2;
-        Integer result = combiner.apply(f1, f2).apply(input);
-        Assertions.assertThat(result).isEqualTo((input + 2) * 2);
+        // expect
+        assertThat(comparator.compare(new User("John", "Doe"), new User("John", "Doe"))).isEqualTo(0);
+        assertThat(comparator.compare(new User("John", "Doe"), new User("John", "Some"))).isLessThan(0);
+        assertThat(comparator.compare(new User("John", "Some"), new User("John", "Doe"))).isGreaterThan(0);
+        assertThat(comparator.compare(new User("John", "Doe"), new User("Jane", "Doe"))).isGreaterThan(0);
+        assertThat(comparator.compare(new User("Jane", "Doe"), new User("John", "Doe"))).isLessThan(0);
     }
 }

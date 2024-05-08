@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -34,10 +35,7 @@ public class Exercises extends Store {
     @Test
     public void P1_hugeBudgets() {
         // when
-        List<String> result = customerList.stream()
-          .filter(c -> c.getBudget() > 10_000)
-          .map(Customer::getName)
-          .toList();
+        List<String> result = todo();
 
         // then
         assertThat(result)
@@ -52,7 +50,7 @@ public class Exercises extends Store {
     @Test
     public void P02_howOldAreTheCustomers() {
         // when
-        double average = customerList.stream().collect(averagingInt(Customer::getAge));
+        double average = todo();
 
         // then
         assertThat(average)
@@ -66,10 +64,7 @@ public class Exercises extends Store {
     public void P03_sortByAge() {
 
         // when
-        final List<Integer> result = customerList.stream()
-          .map(Customer::getAge)
-          .sorted()
-          .toList();
+        final List<Integer> result = todo();
 
         // then
         assertThat(result)
@@ -82,10 +77,7 @@ public class Exercises extends Store {
     @Test
     public void P04_descSortByAge() {
         // when
-        final List<Integer> result = customerList.stream()
-          .map(Customer::getAge)
-          .sorted(Comparator.reverseOrder())
-          .toList();
+        final List<Integer> result = todo();
 
         // then
         assertThat(result)
@@ -98,11 +90,7 @@ public class Exercises extends Store {
     @Test
     public void P05_itemsCustomersWantToBuy() {
         // when
-        final Set<String> result = customerList.stream()
-          .map(Customer::getWantToBuy)
-          .flatMap(Collection::stream)
-          .map(ItemEntry::getName)
-          .collect(Collectors.toSet());
+        final Set<String> result = todo();
 
         // then
         assertThat(result)
@@ -119,10 +107,7 @@ public class Exercises extends Store {
     @Test
     public void P06_youngestCustomer() {
         // when
-        final List<ItemEntry> result = customerList.stream()
-          .min(Comparator.comparing(Customer::getAge))
-          .map(Customer::getWantToBuy)
-          .orElse(Collections.emptyList());
+        final List<ItemEntry> result = todo();
 
         // then
         assertThat(result)
@@ -136,7 +121,7 @@ public class Exercises extends Store {
     @Test
     public void P07_isThereAnyoneOlderThan40() {
         // when
-        boolean result = customerList.stream().anyMatch(c -> c.getAge() > 40);
+        boolean result = todo();
 
         // then
         assertThat(result).isFalse();
@@ -148,7 +133,7 @@ public class Exercises extends Store {
     @Test
     public void P08_isEverybodyOlderThan20() {
         // when
-        boolean result = customerList.stream().allMatch(c -> c.getAge() > 20);
+        boolean result = todo();
 
         // then
         assertThat(result).isTrue();
@@ -160,7 +145,7 @@ public class Exercises extends Store {
     @Test
     public void P09_everyoneWantsSomething() {
         // when
-        boolean result = customerList.stream().noneMatch(c -> c.getWantToBuy().isEmpty());
+        boolean result = todo();
 
         // then
         assertThat(result).isTrue();
@@ -172,10 +157,7 @@ public class Exercises extends Store {
     @Test
     public void P10_nameList() {
         // when
-        final List<String> result = customerList.stream()
-          .map(Customer::getName)
-          .distinct()
-          .toList();
+        final List<String> result = todo();
 
         // then
         assertThat(result).containsOnly("Joe", "Steven", "Patrick", "Diana", "Chris", "Kathy", "Alice", "Andrew",
@@ -188,9 +170,7 @@ public class Exercises extends Store {
     @Test
     public void P11_ageSet() {
         // when
-        final Set<Integer> result = customerList.stream()
-          .map(Customer::getAge)
-          .collect(Collectors.toSet());
+        final Set<Integer> result = todo();
 
         // then
         assertThat(result).hasSize(9);
@@ -203,9 +183,7 @@ public class Exercises extends Store {
     @Test
     public void P12_nameInCsv() {
         // when
-        final String result = customerList.stream()
-          .map(c -> c.getName())
-          .collect(Collectors.joining(",", "[", "]"));
+        final String result = todo();
 
         // then
         assertThat(result).isEqualTo("[Joe,Steven,Patrick,Diana,Alice,Andrew,Martin,Amy,Chris,Kathy]");
@@ -217,8 +195,7 @@ public class Exercises extends Store {
     @Test
     public void P13_ageDistribution() {
         // when
-        final Map<Integer, Long> result = customerList.stream()
-          .collect(Collectors.groupingBy(Customer::getAge, counting()));
+        final Map<Integer, Long> result = todo();
 
         // then
         assertThat(result)
@@ -233,10 +210,7 @@ public class Exercises extends Store {
     @Test
     public void P14_averageAge() {
         // when
-        final double result = customerList.stream()
-          .mapToInt(c -> c.getAge())
-          .average()
-          .orElseThrow();
+        final double result = todo();
 
         // then
         assertThat(result).isEqualTo(28.7);
@@ -248,10 +222,7 @@ public class Exercises extends Store {
     @Test
     public void P15_howMuchToBuyAllItems() {
         // when
-        long result = shopList.stream()
-          .flatMap(shop -> shop.getItemList().stream())
-          .mapToLong(Item::getPrice)
-          .sum();
+        long result = todo();
 
         // then
         assertThat(result).isEqualTo(60930L);
@@ -263,16 +234,7 @@ public class Exercises extends Store {
     @Test
     public void P16_itemsNotOnSale() {
         // when
-        final List<String> itemListOnSale = shopList.stream()
-          .flatMap(shop -> shop.getItemList().stream())
-          .map(Item::getName)
-          .toList();
-
-        final Set<String> result = customerList.stream()
-          .flatMap(c -> c.getWantToBuy().stream())
-          .map(ItemEntry::getName)
-          .filter(not(itemListOnSale::contains))
-          .collect(Collectors.toSet());
+        final Set<String> result = todo();
 
         // then
         assertThat(result).hasSize(3);
@@ -286,30 +248,24 @@ public class Exercises extends Store {
     @Test
     public void P17_havingEnoughMoney() {
         // when
-        Map<String, Integer> items = shopList.stream()
-          .flatMap(shop -> shop.getItemList().stream())
-          .collect(Collectors.toMap(Item::getName, Item::getPrice, Math::min));
-
-        final List<String> customerNameList = customerList.stream()
-          .filter(hasAllAvailableItems(items))
-          .filter(canAffordAll(items))
-          .map(c -> c.getName())
-          .collect(Collectors.toList());
+        final List<String> customerNameList = todo();
 
         // then
         assertThat(customerNameList).hasSize(5);
         assertThat(customerNameList).containsOnly("Joe", "Patrick", "Kathy", "Alice", "Amy");
     }
 
-    private static Predicate<Customer> canAffordAll(Map<String, Integer> items) {
-        return customer -> customer.getWantToBuy().stream()
-          .mapToLong(i -> items.get(i.getName()))
-          .sum() <= customer.getBudget();
+    @Test
+    public void P18_shopsMap() {
+        // when
+        Map<String, Shop> shopsMap = todo();
+
+        // then
+        assertThat(shopsMap)
+            .containsKeys("White Furniture", "Dish Devices", "The Do It Ourselves", "Electrics", "Amazing Apothecary", "The Rapid Supermarket")
+            .allSatisfy((key, value) -> assertThat(key).isEqualTo(value.getName()));
     }
 
-    private static Predicate<Customer> hasAllAvailableItems(Map<String, Integer> items) {
-        return customer -> customer.getWantToBuy().stream().allMatch(i -> items.containsKey(i.getName()));
-    }
 
     private static <T> T todo() {
         throw new RuntimeException("TODO");

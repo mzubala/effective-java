@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import static com.bottega.function.Utils.todo;
+
 class Streams {
 
     private static void L0_cubeComposer() {
@@ -22,9 +24,7 @@ class Streams {
      * {@link Stream#map(Function)}
      */
     static Function<List<String>, List<String>> L1_upperCaseAll() {
-        return list -> list.stream()
-          .map(String::toUpperCase)
-          .toList();
+        return todo();
     }
 
     /**
@@ -32,10 +32,7 @@ class Streams {
      * {@link Stream#filter(Predicate)}
      */
     static Function<List<String>, List<String>> L2_upperCaseAllAndFilter() {
-        return list -> list.stream()
-          .filter(s -> s.length() >= 6)
-          .map(String::toUpperCase)
-          .toList();
+        return todo();
     }
 
     /**
@@ -44,7 +41,7 @@ class Streams {
      * {@link Stream#sorted()} {@link Stream#findAny()}
      */
     static Function<List<String>, String> L3_findTheLongestName() {
-        return list -> list.stream().max(Comparator.comparing(String::length)).orElseThrow();
+        return todo();
     }
 
     /**
@@ -53,9 +50,7 @@ class Streams {
      */
     // [[1], [2,3], []] -> [1,2,3]
     static Function<List<List<Integer>>, List<Integer>> L4_flatten() {
-        return lists -> lists.stream()
-          .flatMap(list -> list.stream())
-          .toList();
+        return todo();
     }
 
     /**
@@ -63,7 +58,7 @@ class Streams {
      * {@link Stream#distinct()}
      */
     static Function<List<Integer>, List<Integer>> L5_distinctElements() {
-        return list -> list.stream().distinct().toList();
+        return todo();
     }
 
     /**
@@ -71,9 +66,7 @@ class Streams {
      */
     // [1,2,3] -> [1,1,2,2,3,3]
     static Function<List<Integer>, List<Integer>> L6_duplicateElements() {
-        return ints -> ints.stream()
-          .flatMap(i -> Stream.of(i, i))
-          .toList();
+        return todo();
     }
 
     /**
@@ -81,9 +74,7 @@ class Streams {
      * {@link Stream#generate(Supplier)}
      */
     static Function<List<Integer>, List<Integer>> L7_duplicateElementsNTimes(int givenNumberOfTimes) {
-        return ints -> ints.stream()
-          .flatMap(i -> Stream.generate(() -> i).limit(givenNumberOfTimes))
-          .toList();
+        return todo();
     }
 
     /**
@@ -91,7 +82,7 @@ class Streams {
      * {@link Stream#iterate}
      */
     static Supplier<List<Integer>> L8_generate3s() {
-        return () -> Stream.iterate(0, i -> i + 3).limit(10).toList();
+        return todo();
     }
 
     /**
@@ -100,18 +91,11 @@ class Streams {
      * {@link LocalDate#isLeapYear()}
      */
     static Supplier<List<Integer>> L9_leapYears() {
-        return () -> Stream.iterate(Year.of(2000), year -> year.plusYears(1))
-          .filter(Year::isLeap)
-          .limit(5)
-          .map(Year::getValue)
-          .toList();
+        return todo();
     }
 
     static Supplier<List<Integer>> L9_leapYears2() {
-        return () -> Stream.iterate(2000, year -> year + 1)
-          .filter(Year::isLeap)
-          .limit(5)
-          .toList();
+        return todo();
     }
 
     /**
@@ -123,21 +107,14 @@ class Streams {
     // [1,2,3,4] -> [2,3,4,1] -> [3,4,1,2] -> [4,1,2,3] -> [1,2,3,4]
     // [1,2,3,4][1,2,3,4]
     static UnaryOperator<List<Integer>> L10_rotate(int n) {
-        return list -> Stream.concat(list.stream(), list.stream())
-          .skip(n % list.size())
-          .limit(list.size())
-          .toList();
+        return todo();
     }
 
     /**
      * Check if all elements sum up to 100, if no throw an exception
      */
     static Predicate<List<Double>> L11_sum() throws IllegalStateException {
-        return doubles -> doubles.stream()
-          .reduce(Double::sum)
-          .map(sum -> sum == 100)
-          .filter(i -> i)
-          .orElseThrow(IllegalStateException::new);
+        return todo();
     }
 
     /**
@@ -146,21 +123,14 @@ class Streams {
      * Advanced challenge: use {@link Stream#flatMap(Function)}
      */
     static Function<List<Optional<Integer>>, List<Integer>> L12_filterPresent() {
-        return list -> list.stream()
-          .flatMap(o -> o.stream()) // JDK9+
-          .toList();
+        return todo();
     }
 
     static Function<List<Optional<Integer>>, List<Integer>> L12_filterPresent_jdk8() {
-        return list -> list.stream()
-          .filter(Optional::isPresent)
-          .map(Optional::get)
-          .toList();
+        return todo();
     }
 
     static Function<List<Optional<Integer>>, List<Integer>> L12_filterPresent_jdk8_2() {
-        return list -> list.stream()
-          .flatMap(o -> o.map(Stream::of).orElse(Stream.empty()))
-          .toList();
+        return todo();
     }
 }
