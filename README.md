@@ -5,7 +5,7 @@ In order to prepare for the workshop, we'll need:
 - git
 - IDE (IDEA preferred)
 
-Clone this repository and make sure that you get `build success` after running `mvn verify`
+Clone this repository and make sure that you get `build success` after running `mvnw compile`
 
 
 ### PL
@@ -15,4 +15,4 @@ Clone this repository and make sure that you get `build success` after running `
 - git
 - ulubione IDE (najlepiej IDEA)
 
-Sklonujcie proszę to repozytorium i upewnijcie się, że widzicie `build success` po uruchomieniu `mvn verify`.
+Sklonujcie proszę to repozytorium i upewnijcie się, że widzicie `build success` po uruchomieniu `mvnw compile`.
