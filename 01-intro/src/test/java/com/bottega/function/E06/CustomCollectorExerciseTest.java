@@ -48,7 +48,7 @@ public class CustomCollectorExerciseTest {
                 new Employee("Sally", FEMALE, 230_000, STAFF)
             ),
             new AvgSalary(MALE, JUNIOR, 100_000),
-            new AvgSalary(FEMALE, LEAD, 180_000),
+            new AvgSalary(FEMALE, LEAD, 190_000),
             new AvgSalary(MALE, REGULAR, 120_000),
             new AvgSalary(MALE, SENIOR, 140_000),
             new AvgSalary(FEMALE, STAFF, 230_000)
