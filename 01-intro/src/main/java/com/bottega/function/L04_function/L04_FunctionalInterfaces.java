@@ -39,22 +39,62 @@ class L04_FunctionalInterfaces {
      */
     public static void main(String[] args) {
         List<Integer> list = List.of(1);
-        List<String> transformed = Lists.transform(list, new com.google.common.base.Function<Integer, String>() {
+        var intToString = new com.google.common.base.Function<Integer, String>() {
             @Override
             public String apply(Integer integer) {
                 return integer.toString();
             }
-        });
+        };
+
+        Function<Integer, String> intToStringUsingLambdas = (i) -> i.toString();
+
+        List<String> transformed = Lists.transform(list, integer -> integer.toString());
 
         Function<Integer, String> f1 = i -> i.toString();
+        Function<Integer, String> f11 = i -> {
+            var prefix = "xxxx";
+            return prefix + i.toString();
+        };
         Consumer<Integer> f2 = s -> System.out.println(s); // Function<T, Void>
+        Function<Integer, Void> f21 = (s) -> {
+            System.out.println(s);
+            return null;
+        };
         Supplier<Integer> f3 = () -> 42;                   // Function<Void, T>
-        Runnable f4 = () -> {};                            // Function<Void, Void>
+        Supplier<Integer> f33 = () -> {
+            var value = 42;
+            return value;
+        };
+        Runnable f4 = () -> {
+            System.out.println("I'm running");
+            System.out.println("I'm running again");
+        };                            // Function<Void, Void>
         Callable<Integer> f5 = () -> 42;                   // Function<Void, T>
         UnaryOperator<Integer> f6 = i -> i + 1;            // Function<T,T>
         Predicate<String> f7 = str -> str.isEmpty();       // Function<T, Boolean>
 
         BiFunction<Long, Long, Long> f8 = (i1, i2) -> i1 + i2;
         BinaryOperator<Long> f9 = (aLong, aLong2) -> Long.max(aLong, aLong2); // BiFunction<T,T,T>
+
+        f4.run();
     }
+}
+
+
+interface F1 {
+
+    String f1(Integer i);
+
+}
+
+interface F2 {
+
+    String cdsdfgs(Integer s);
+
+}
+
+interface F3 {
+
+    String dsfgsd(Integer s);
+
 }
