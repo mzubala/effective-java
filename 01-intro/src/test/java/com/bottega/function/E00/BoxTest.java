@@ -2,10 +2,25 @@ package com.bottega.function.E00;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BoxTest {
+
+    // given
+    // setup system under test (sut)
+
+    // when
+    // interaction with the sut
+
+    // then
+    // check assertions regarding sut
+
+    // -----------
+
+    // expect
 
     @Test
     public void createsAnEmptyBox() {
