@@ -15,8 +15,9 @@ class ParallelCollectionProcessing {
             IntStream.range(0, Runtime.getRuntime().availableProcessors() + 10).boxed()
               .parallel()
               .map(i -> {
+                  System.out.println(STR."Processing \{i} on \{Thread.currentThread().getName()}");
                   try {
-                      Thread.sleep(100_000);
+                      Thread.sleep(2_000);
                   } catch (InterruptedException e) {
                       throw new RuntimeException(e);
                   }
@@ -27,9 +28,9 @@ class ParallelCollectionProcessing {
 
         Thread.sleep(100);
 
-        List<Integer> results = timed(() -> collection.parallelStream().map(i -> process(i)).toList());
+        //List<Integer> results = timed(() -> collection.parallelStream().map(i -> process(i)).toList());
 
-        System.out.println(results);
+        //System.out.println(results);
     }
 
     private static <T> T process(T input) {

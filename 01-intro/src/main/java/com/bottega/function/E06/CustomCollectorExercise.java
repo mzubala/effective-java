@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -15,7 +16,7 @@ import static com.bottega.function.Utils.todo;
 class CustomCollectorExercise {
 
     static Function<List<Employee>, List<AvgSalary>> E01_calculateAverageSalaries() {
-        return (employees) -> employees.stream().collect(new AveragingCollector());
+        return (employees) -> employees.stream().parallel().collect(new AveragingCollector());
     }
 
     record Employee(String name, Gender gender, Integer salary, Position position) {
@@ -58,12 +59,13 @@ class CustomCollectorExercise {
 
         @Override
         public Supplier<Map<GenderPosition, SallariesSum>> supplier() {
-            return HashMap::new;
+            return ConcurrentHashMap::new;
         }
 
         @Override
         public BiConsumer<Map<GenderPosition, SallariesSum>, Employee> accumulator() {
             return (acc, employee) -> {
+                System.out.println(STR."\{Thread.currentThread().getName()} accumulator \{employee}");
                 acc.merge(new GenderPosition(employee), new SallariesSum(employee), SallariesSum::add);
             };
         }
@@ -71,6 +73,7 @@ class CustomCollectorExercise {
         @Override
         public BinaryOperator<Map<GenderPosition, SallariesSum>> combiner() {
             return (acc1, acc2) -> {
+                System.out.println(STR."\{Thread.currentThread().getName()} combiner \{acc1} \{acc2}");
                 var acc = new HashMap<>(acc1);
                 acc2.forEach((genderPosition, sum) -> acc.merge(genderPosition, sum, SallariesSum::add));
                 return acc;
@@ -86,7 +89,7 @@ class CustomCollectorExercise {
 
         @Override
         public Set<Characteristics> characteristics() {
-            return Set.of(Characteristics.UNORDERED);
+            return Set.of(Characteristics.CONCURRENT, Characteristics.UNORDERED);
         }
     }
 

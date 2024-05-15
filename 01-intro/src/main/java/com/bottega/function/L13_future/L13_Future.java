@@ -9,6 +9,7 @@ class L13_Future {
     public static void main(String[] args) {
         try (var e = Executors.newFixedThreadPool(4)) {
             Future<Integer> result = e.submit(() -> process(42));
+            Thread.sleep(5_000);
             System.out.println("Doing something else...");
 
             var r = result.get();

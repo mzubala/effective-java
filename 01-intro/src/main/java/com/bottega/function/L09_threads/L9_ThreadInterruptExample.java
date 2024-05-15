@@ -12,7 +12,7 @@ class L9_ThreadInterruptExample {
         Thread thread = new Thread(() -> {
             while (true) {
                 if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("interrupted, closing...");
+                    System.out.println("interrupted (flag), closing...");
                     break;
                 }
                 try {
@@ -27,7 +27,7 @@ class L9_ThreadInterruptExample {
         Thread thread2 = new Thread(() -> {
             while (true) {
                 if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("interrupted, closing...");
+                    System.out.println("interrupted (flag), closing...");
                     break;
                 }
 
@@ -44,7 +44,7 @@ class L9_ThreadInterruptExample {
             while (true) {
 
                 if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("interrupted, closing...");
+                    System.out.println("interrupted (flag), closing...");
                     break;
                 }
                 try {
