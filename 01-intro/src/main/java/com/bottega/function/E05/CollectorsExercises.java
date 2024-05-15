@@ -27,15 +27,7 @@ class CollectorsExercises {
      * Collect elements to a {@link List} wrapped in {@link Collections#unmodifiableList(List)} instance
      */
     static Function<List<String>, List<String>> L3_unmodifiable() {
-<<<<<<< Updated upstream
         return todo();
-=======
-        /*return list -> list.stream()
-          .collect(collectingAndThen(Collectors.toList(), Collections::unmodifiableList));*/
-
-        return list -> list.stream()
-            .collect(Collectors.toUnmodifiableList());
->>>>>>> Stashed changes
     }
 
     /**
@@ -43,12 +35,7 @@ class CollectorsExercises {
      * and resolve potential collisions
      */
     static Function<List<String>, Map<String, Integer>> L4_toMap() {
-<<<<<<< Updated upstream
         return todo();
-=======
-        return strings -> strings.stream()
-          .collect(toMap(s -> s.toUpperCase(), s -> s.length(), (l1, _) -> l1));
->>>>>>> Stashed changes
     }
 
     /**
